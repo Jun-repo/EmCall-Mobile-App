@@ -1,0 +1,64 @@
+{
+    "@@locale": "es",
+    "signin": "Iniciar sesión",
+    "@signin": {},
+    "subTitle": "¡Hola! Es bueno verte de nuevo.",
+    "@subTitle": {},
+  
+    "signup": "Registrarse",
+    "@signup": {},
+  
+    "labelPhoneNumber": "Número de teléfono",
+    "@labelPhoneNumber": {},
+    "validatorPhoneNone": "Por favor, ingresa tu número de teléfono.",
+    "@validatorPhoneNone": {},
+    "validatorPhoneInvalid": "Por favor, ingresa un número de teléfono válido.",
+    "@validatorPhoneInvalid": {},
+  
+    "labelPassword": "Contraseña",
+    "@labelPassword": {},
+    "validatorPassNone": "Por favor, ingresa tu contraseña.",
+    "@validatorPassNone": {},
+    "validatorPass6cha": "La contraseña debe tener al menos 6 caracteres.",
+    "@validatorPass6cha": {},
+    "validatorPassSymbol": "La contraseña debe contener al menos un símbolo.",
+    "@validatorPassSymbol": {},
+    "validatorPassNum": "La contraseña debe contener al menos un número.",
+    "@validatorPassNum": {},
+    "validatorPassLowercase": "La contraseña debe contener al menos una letra minúscula.",
+    "@validatorPassLowercase": {},
+    "validatorPassUppercase": "La contraseña debe contener al menos una letra mayúscula.",
+    "@validatorPassUppercase": {},
+  
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "@forgotPassword": {},
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "@dontHaveAccount": {},
+  
+    "verificationCode": "Introduce el código de verificación",
+    "@verificationCode": {},
+    "forgotPass": "Recuperar contraseña",
+    "@forgotPass": {},
+    "sendCode": "Enviar código",
+    "@sendCode": {},
+  
+    "ok": "OK",
+    "@ok": {},
+    "back": "Atrás",
+    "@back": {},
+    "cancel": "Cancelar",
+    "@cancel": {},
+    "save": "Guardar",
+    "@save": {},
+  
+    "setNewPassword": "Establecer nueva contraseña",
+    "@setNewPassword": {},
+    "newPassword": "Nueva contraseña",
+    "@newPassword": {},
+
+    "general": "General",
+    "@general": {},
+    "favorites": "Favoritos",
+    "@favorites": {}
+  }
+  

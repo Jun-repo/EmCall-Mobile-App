@@ -1,0 +1,64 @@
+{
+    "@@locale": "tl",
+    "signin": "Mag-sign In",
+    "@signin": {},
+    "subTitle": "Kumusta! Masaya kaming makita kang muli.",
+    "@subTitle": {},
+  
+    "signup": "Mag-sign Up",
+    "@signup": {},
+  
+    "labelPhoneNumber": "Numero ng Telepono",
+    "@labelPhoneNumber": {},
+    "validatorPhoneNone": "Pakilagay ang iyong numero ng telepono.",
+    "@validatorPhoneNone": {},
+    "validatorPhoneInvalid": "Pakilagay ang tamang numero ng telepono.",
+    "@validatorPhoneInvalid": {},
+  
+    "labelPassword": "Password",
+    "@labelPassword": {},
+    "validatorPassNone": "Pakilagay ang iyong password.",
+    "@validatorPassNone": {},
+    "validatorPass6cha": "Ang password ay dapat hindi bababa sa 6 na karakter.",
+    "@validatorPass6cha": {},
+    "validatorPassSymbol": "Ang password ay dapat may isang simbolo.",
+    "@validatorPassSymbol": {},
+    "validatorPassNum": "Ang password ay dapat may isang numero.",
+    "@validatorPassNum": {},
+    "validatorPassLowercase": "Ang password ay dapat may maliit na titik.",
+    "@validatorPassLowercase": {},
+    "validatorPassUppercase": "Ang password ay dapat may malaking titik.",
+    "@validatorPassUppercase": {},
+  
+    "forgotPassword": "Nakalimutan ang Password?",
+    "@forgotPassword": {},
+    "dontHaveAccount": "Wala ka pang account?",
+    "@dontHaveAccount": {},
+  
+    "verificationCode": "Ilagay ang Verification Code",
+    "@verificationCode": {},
+    "forgotPass": "Nakalimutan ang Password",
+    "@forgotPass": {},
+    "sendCode": "Ipadala ang Code",
+    "@sendCode": {},
+  
+    "ok": "OK",
+    "@ok": {},
+    "back": "Bumalik",
+    "@back": {},
+    "cancel": "Kanselahin",
+    "@cancel": {},
+    "save": "I-save",
+    "@save": {},
+  
+    "setNewPassword": "Itakda ang Bagong Password",
+    "@setNewPassword": {},
+    "newPassword": "Bagong Password",
+    "@newPassword": {},
+
+    "general": "Pangkalahatan",
+    "@general": {},
+    "favorites": "Paborito",
+    "@favorites": {}
+  }
+  

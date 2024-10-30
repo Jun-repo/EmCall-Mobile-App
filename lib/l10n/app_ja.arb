@@ -1,0 +1,64 @@
+{
+    "@@locale": "ja",
+    "signin": "ログイン",
+    "@signin": {},
+    "subTitle": "こんにちは！また会えて嬉しいです。",
+    "@subTitle": {},
+  
+    "signup": "サインアップ",
+    "@signup": {},
+  
+    "labelPhoneNumber": "電話番号",
+    "@labelPhoneNumber": {},
+    "validatorPhoneNone": "電話番号を入力してください。",
+    "@validatorPhoneNone": {},
+    "validatorPhoneInvalid": "有効な電話番号を入力してください。",
+    "@validatorPhoneInvalid": {},
+  
+    "labelPassword": "パスワード",
+    "@labelPassword": {},
+    "validatorPassNone": "パスワードを入力してください。",
+    "@validatorPassNone": {},
+    "validatorPass6cha": "パスワードは6文字以上でなければなりません。",
+    "@validatorPass6cha": {},
+    "validatorPassSymbol": "パスワードには少なくとも1つの記号を含める必要があります。",
+    "@validatorPassSymbol": {},
+    "validatorPassNum": "パスワードには少なくとも1つの数字を含める必要があります。",
+    "@validatorPassNum": {},
+    "validatorPassLowercase": "パスワードには少なくとも1つの小文字を含める必要があります。",
+    "@validatorPassLowercase": {},
+    "validatorPassUppercase": "パスワードには少なくとも1つの大文字を含める必要があります。",
+    "@validatorPassUppercase": {},
+  
+    "forgotPassword": "パスワードをお忘れですか?",
+    "@forgotPassword": {},
+    "dontHaveAccount": "アカウントをお持ちではないですか？",
+    "@dontHaveAccount": {},
+  
+    "verificationCode": "認証コードを入力してください",
+    "@verificationCode": {},
+    "forgotPass": "パスワードを忘れた",
+    "@forgotPass": {},
+    "sendCode": "コードを送信",
+    "@sendCode": {},
+  
+    "ok": "OK",
+    "@ok": {},
+    "back": "戻る",
+    "@back": {},
+    "cancel": "キャンセル",
+    "@cancel": {},
+    "save": "保存",
+    "@save": {},
+  
+    "setNewPassword": "新しいパスワードを設定する",
+    "@setNewPassword": {},
+    "newPassword": "新しいパスワード",
+    "@newPassword": {},
+
+    "general": "一般",
+    "@general": {},
+    "favorites": "お気に入り",
+    "@favorites": {}
+  }
+  

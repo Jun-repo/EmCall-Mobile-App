@@ -1,0 +1,64 @@
+{
+    "@@locale": "ar",
+    "signin": "تسجيل الدخول",
+    "@signin": {},
+    "subTitle": "مرحباً! سعداء برؤيتك مجدداً.",
+    "@subTitle": {},
+  
+    "signup": "إنشاء حساب",
+    "@signup": {},
+  
+    "labelPhoneNumber": "رقم الهاتف",
+    "@labelPhoneNumber": {},
+    "validatorPhoneNone": "يرجى إدخال رقم هاتفك.",
+    "@validatorPhoneNone": {},
+    "validatorPhoneInvalid": "يرجى إدخال رقم هاتف صالح.",
+    "@validatorPhoneInvalid": {},
+  
+    "labelPassword": "كلمة المرور",
+    "@labelPassword": {},
+    "validatorPassNone": "يرجى إدخال كلمة المرور.",
+    "@validatorPassNone": {},
+    "validatorPass6cha": "يجب أن تكون كلمة المرور مكونة من 6 أحرف على الأقل.",
+    "@validatorPass6cha": {},
+    "validatorPassSymbol": "يجب أن تحتوي كلمة المرور على رمز واحد على الأقل.",
+    "@validatorPassSymbol": {},
+    "validatorPassNum": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.",
+    "@validatorPassNum": {},
+    "validatorPassLowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل.",
+    "@validatorPassLowercase": {},
+    "validatorPassUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل.",
+    "@validatorPassUppercase": {},
+  
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "@forgotPassword": {},
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "@dontHaveAccount": {},
+  
+    "verificationCode": "أدخل رمز التحقق",
+    "@verificationCode": {},
+    "forgotPass": "نسيت كلمة المرور",
+    "@forgotPass": {},
+    "sendCode": "إرسال الرمز",
+    "@sendCode": {},
+  
+    "ok": "موافق",
+    "@ok": {},
+    "back": "رجوع",
+    "@back": {},
+    "cancel": "إلغاء",
+    "@cancel": {},
+    "save": "حفظ",
+    "@save": {},
+  
+    "setNewPassword": "تعيين كلمة مرور جديدة",
+    "@setNewPassword": {},
+    "newPassword": "كلمة المرور الجديدة",
+    "@newPassword": {},
+
+    "general": "عام",
+    "@general": {},
+    "favorites": "المفضلات",
+    "@favorites": {}
+  }
+  

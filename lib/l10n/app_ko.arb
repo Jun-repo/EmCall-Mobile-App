@@ -1,0 +1,64 @@
+{
+    "@@locale": "ko",
+    "signin": "로그인",
+    "@signin": {},
+    "subTitle": "안녕하세요! 다시 만나서 반가워요.",
+    "@subTitle": {},
+  
+    "signup": "가입하기",
+    "@signup": {},
+  
+    "labelPhoneNumber": "전화번호",
+    "@labelPhoneNumber": {},
+    "validatorPhoneNone": "전화번호를 입력하세요.",
+    "@validatorPhoneNone": {},
+    "validatorPhoneInvalid": "유효한 전화번호를 입력하세요.",
+    "@validatorPhoneInvalid": {},
+  
+    "labelPassword": "비밀번호",
+    "@labelPassword": {},
+    "validatorPassNone": "비밀번호를 입력하세요.",
+    "@validatorPassNone": {},
+    "validatorPass6cha": "비밀번호는 최소 6자 이상이어야 합니다.",
+    "@validatorPass6cha": {},
+    "validatorPassSymbol": "비밀번호에는 최소한 하나의 특수문자가 포함되어야 합니다.",
+    "@validatorPassSymbol": {},
+    "validatorPassNum": "비밀번호에는 숫자가 하나 이상 포함되어야 합니다.",
+    "@validatorPassNum": {},
+    "validatorPassLowercase": "비밀번호에는 소문자가 하나 이상 포함되어야 합니다.",
+    "@validatorPassLowercase": {},
+    "validatorPassUppercase": "비밀번호에는 대문자가 하나 이상 포함되어야 합니다.",
+    "@validatorPassUppercase": {},
+  
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "@forgotPassword": {},
+    "dontHaveAccount": "계정이 없으신가요?",
+    "@dontHaveAccount": {},
+  
+    "verificationCode": "인증 코드를 입력하세요",
+    "@verificationCode": {},
+    "forgotPass": "비밀번호 찾기",
+    "@forgotPass": {},
+    "sendCode": "코드 보내기",
+    "@sendCode": {},
+  
+    "ok": "확인",
+    "@ok": {},
+    "back": "뒤로",
+    "@back": {},
+    "cancel": "취소",
+    "@cancel": {},
+    "save": "저장",
+    "@save": {},
+  
+    "setNewPassword": "새 비밀번호 설정",
+    "@setNewPassword": {},
+    "newPassword": "새 비밀번호",
+    "@newPassword": {},
+
+    "general": "일반",
+    "@general": {},
+    "favorites": "즐겨찾기",
+    "@favorites": {}
+  }
+  

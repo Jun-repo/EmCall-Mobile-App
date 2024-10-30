@@ -1,0 +1,65 @@
+{
+    "@@locale": "en",
+     "signin": "Sign In",
+     "@signin": {},
+     "subTitle": "Hi there! Nice to see you again.",
+     "@subTitle": {},
+
+     "signup": "Sign Up",
+     "@signup": {},
+
+     "labelPhoneNumber": "Phone Number",
+     "@labelPhoneNumber": {},
+     "validatorPhoneNone": "Please enter your phone number.",
+     "@validatorPhoneNone": {},
+     "validatorPhoneInvalid": "Please enter a valid phone number.",
+     "@validatorPhoneInvalid": {},
+
+     "labelPassword": "Password",
+     "@labelPassword": {},
+     "validatorPassNone": "Please enter your password.",
+     "@validatorPassNone": {},
+     "validatorPass6cha": "Password must be at least 6 characters long.",
+     "@validatorPass6cha": {},
+     "validatorPassSymbol": "'Password must contain at least one symbol.",
+     "@validatorPassSymbol": {},
+     "validatorPassNum": "Password must contain at least one number.",
+     "@validatorPassNum": {},
+     "validatorPassLowercase": "Password must contain at least one uppercase letter.",
+     "@validatorPassLowercase": {},
+     "validatorPassUppercase": "Password must contain at least one lowercase letter.",
+     "@validatorPassUppercase": {},
+
+     "forgotPassword": "Forgot Password?",
+     "@forgotPassword": {},
+     "dontHaveAccount": "Don't have an account?",
+     "@dontHaveAccount": {},
+
+     "verificationCode": "Enter Verification Code",
+     "@verificationCode": {},
+     "forgotPass": "Forgot Password",
+     "@forgotPass": {},
+     "sendCode": "Send Code",
+     "@sendCode": {},
+
+     "ok": "OK",
+     "@ok": {},
+     "back": "Back",
+     "@back": {},
+     "cancel": "Cancel",
+     "@cancel": {},
+     "save": "Save",
+     "@save": {},
+
+     "setNewPassword": "Set New Password",
+     "@setNewPassword": {},
+     "newPassword": "New Password",
+     "@newPassword": {},
+
+     "general": "General",
+     "@general": {},
+     "favorites": "Favorites",
+     "@favorites": {}
+
+
+}

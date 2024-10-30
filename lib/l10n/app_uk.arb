@@ -1,0 +1,64 @@
+{
+    "@@locale": "uk",
+    "signin": "Увійти",
+    "@signin": {},
+    "subTitle": "Привіт! Радий знову бачити тебе.",
+    "@subTitle": {},
+  
+    "signup": "Зареєструватися",
+    "@signup": {},
+  
+    "labelPhoneNumber": "Номер телефону",
+    "@labelPhoneNumber": {},
+    "validatorPhoneNone": "Будь ласка, введіть свій номер телефону.",
+    "@validatorPhoneNone": {},
+    "validatorPhoneInvalid": "Будь ласка, введіть дійсний номер телефону.",
+    "@validatorPhoneInvalid": {},
+  
+    "labelPassword": "Пароль",
+    "@labelPassword": {},
+    "validatorPassNone": "Будь ласка, введіть свій пароль.",
+    "@validatorPassNone": {},
+    "validatorPass6cha": "Пароль має містити щонайменше 6 символів.",
+    "@validatorPass6cha": {},
+    "validatorPassSymbol": "Пароль має містити щонайменше один символ.",
+    "@validatorPassSymbol": {},
+    "validatorPassNum": "Пароль має містити щонайменше одну цифру.",
+    "@validatorPassNum": {},
+    "validatorPassLowercase": "Пароль має містити щонайменше одну літеру нижнього регістру.",
+    "@validatorPassLowercase": {},
+    "validatorPassUppercase": "Пароль має містити щонайменше одну літеру верхнього регістру.",
+    "@validatorPassUppercase": {},
+  
+    "forgotPassword": "Забули пароль?",
+    "@forgotPassword": {},
+    "dontHaveAccount": "Немає облікового запису?",
+    "@dontHaveAccount": {},
+  
+    "verificationCode": "Введіть код підтвердження",
+    "@verificationCode": {},
+    "forgotPass": "Відновлення пароля",
+    "@forgotPass": {},
+    "sendCode": "Надіслати код",
+    "@sendCode": {},
+  
+    "ok": "OK",
+    "@ok": {},
+    "back": "Назад",
+    "@back": {},
+    "cancel": "Скасувати",
+    "@cancel": {},
+    "save": "Зберегти",
+    "@save": {},
+  
+    "setNewPassword": "Встановити новий пароль",
+    "@setNewPassword": {},
+    "newPassword": "Новий пароль",
+    "@newPassword": {},
+
+    "general": "Загальний",
+    "@general": {},
+    "favorites": "Улюблені",
+    "@favorites": {}
+  }
+  
