@@ -71,13 +71,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 70),
-                  // Image at the top
-                  Image.asset(
-                    'assets/splash.png', // Replace with your actual image path
-                    height: 80, // Set the desired height
-                  ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 170),
+                  // // Image at the top
+                  // Image.asset(
+                  //   'assets/splash.png', // Replace with your actual image path
+                  //   height: 80, // Set the desired height
+                  // ),
+                  // const SizedBox(height: 15),
                   // Title
                   Text(
                     AppLocalizations.of(context)!.signin,

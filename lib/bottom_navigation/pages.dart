@@ -1,6 +1,6 @@
 import 'package:emcall/bottom_navigation/pages/contact_page.dart';
-import 'package:emcall/bottom_navigation/pages/settings_page.dart';
 import 'package:emcall/bottom_navigation/pages/tips_tutorials_page.dart';
+import 'package:emcall/services/map.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'pages/home_page.dart'; // Ensure this file exists
@@ -20,7 +20,7 @@ class PagesState extends State<Pages> {
     const HomePage(),
     const ContactPage(),
     const TipsTutorialsPage(),
-    const SettingsPage(),
+    const MapPage(),
   ];
 
   @override

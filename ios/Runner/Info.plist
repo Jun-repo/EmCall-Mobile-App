@@ -38,6 +38,7 @@
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>We use your location to provide better service and emergency tracking.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>We need access to your location even when the app is in the background to help in emergencies.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>This app requires camera access for emergency video calls.</string>
