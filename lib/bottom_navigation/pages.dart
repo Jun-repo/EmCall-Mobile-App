@@ -37,7 +37,7 @@ class PagesState extends State<Pages> {
         height: 60.0,
         items: <Widget>[
           Icon(
-            Icons.home,
+            Icons.home_outlined,
             size: 30,
             color: _currentIndex == 0
                 ? (theme.brightness == Brightness.light
@@ -48,7 +48,7 @@ class PagesState extends State<Pages> {
                     : Colors.white54),
           ),
           Icon(
-            Icons.contacts,
+            Icons.contacts_outlined,
             size: 30,
             color: _currentIndex == 1
                 ? (theme.brightness == Brightness.light
@@ -59,7 +59,7 @@ class PagesState extends State<Pages> {
                     : Colors.white54),
           ),
           Icon(
-            Icons.info,
+            Icons.info_outline,
             size: 30,
             color: _currentIndex == 2
                 ? (theme.brightness == Brightness.light
@@ -70,7 +70,7 @@ class PagesState extends State<Pages> {
                     : Colors.white54),
           ),
           Icon(
-            Icons.settings,
+            Icons.map_outlined,
             size: 30,
             color: _currentIndex == 3
                 ? (theme.brightness == Brightness.light

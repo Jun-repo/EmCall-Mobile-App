@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapPage extends StatefulWidget {
@@ -156,6 +157,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                             ]
                           : [],
                     ),
+                    buildFloatingSearchBar(context),
                   ],
                 ),
           Positioned(
@@ -165,6 +167,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
               children: [
                 FloatingActionButton(
                   backgroundColor: Colors.transparent,
+                  elevation: 12,
                   shape: CircleBorder(
                     side: BorderSide(
                       color: Colors.redAccent.withOpacity(0.5),
@@ -183,7 +186,14 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                 ),
                 const SizedBox(height: 10),
                 FloatingActionButton(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.transparent,
+                  elevation: 12,
+                  shape: CircleBorder(
+                    side: BorderSide(
+                      color: Colors.redAccent.withOpacity(0.5),
+                      width: 1,
+                    ),
+                  ),
                   onPressed: () {
                     if (initialPosition != null) {
                       _mapController.move(initialPosition!, 16);
@@ -191,7 +201,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                   },
                   child: const Icon(
                     Icons.my_location,
-                    color: Colors.blue,
+                    color: Colors.redAccent,
                   ),
                 ),
               ],
@@ -201,9 +211,12 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
             controller: _panelController,
             minHeight: 0,
             maxHeight: 200,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             panel: _buildMapStyleSelector(),
-            panelSnapping: false,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.white
+                : Colors.black,
+            panelSnapping: true,
             isDraggable: true,
             onPanelSlide: (position) {
               setState(() {
@@ -216,6 +229,27 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
     );
   }
 
+  // Add this method to get the appropriate image path for each style
+  String _getStyleImage(String styleKey) {
+    switch (styleKey) {
+      case 'Streets':
+        return 'assets/images/mapstyle/Mapbox-streets.png';
+      case 'Outdoors':
+        return 'assets/images/mapstyle/Mapbox-outdoors.png';
+      case 'Light':
+        return 'assets/images/mapstyle/Mapbox-Light.png';
+      case 'Dark':
+        return 'assets/images/mapstyle/Mapbox-dark.png';
+      case 'Satellite':
+        return 'assets/images/mapstyle/Mapbox-Satellite.png';
+      case 'Satellite Streets':
+        return 'assets/images/mapstyle/Mapbox-Satellite.png';
+      default:
+        return 'assets/images/mapstyle/Mapbox-streets.png'; // fallback image
+    }
+  }
+
+// In your build method, update the SingleChildScrollView content
   Widget _buildMapStyleSelector() {
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -239,16 +273,22 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
-                    width: 60,
-                    height: 60,
+                    width: 100,
+                    height: 100,
                     decoration: BoxDecoration(
-                      color: _getStyleColor(style.key),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: selectedStyle == style.value
-                            ? Colors.blue
+                            ? Colors.redAccent
                             : Colors.transparent,
                         width: 2,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        _getStyleImage(style.key),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -260,23 +300,66 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
       ),
     );
   }
+}
 
-  Color _getStyleColor(String styleKey) {
-    switch (styleKey) {
-      case 'Streets':
-        return Colors.orange;
-      case 'Outdoors':
-        return Colors.green;
-      case 'Light':
-        return Colors.grey;
-      case 'Dark':
-        return Colors.black;
-      case 'Satellite':
-        return Colors.brown;
-      case 'Satellite Streets':
-        return Colors.purple;
-      default:
-        return Colors.blue;
-    }
-  }
+Widget buildFloatingSearchBar(BuildContext context) {
+  final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+  return FloatingSearchBar(
+    hint: 'Search...',
+    scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+    transitionDuration: const Duration(milliseconds: 800),
+    transitionCurve: Curves.easeInOut,
+    physics: const BouncingScrollPhysics(),
+    axisAlignment: isPortrait ? 0.0 : -1.0,
+    openAxisAlignment: 0.0,
+    width: isPortrait ? 600 : 500,
+    debounceDelay: const Duration(milliseconds: 500),
+    onQueryChanged: (query) {
+      // Call your model, bloc, or controller here to filter search results.
+    },
+    transition: CircularFloatingSearchBarTransition(),
+    actions: [
+      FloatingSearchBarAction(
+        showIfOpened: false,
+        child: CircularButton(
+          icon: const Icon(Icons.place),
+          onPressed: () {
+            // Action when the place icon is pressed.
+          },
+        ),
+      ),
+      FloatingSearchBarAction.searchToClear(
+        showIfClosed: false,
+      ),
+    ],
+    builder: (context, transition) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Material(
+          color: Colors.white,
+          elevation: 4.0,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Example Result 1'),
+                onTap: () {
+                  // Action when this result is selected.
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text('Example Result 2'),
+                onTap: () {
+                  // Action when this result is selected.
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

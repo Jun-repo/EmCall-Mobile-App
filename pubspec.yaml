@@ -46,6 +46,7 @@ dependencies:
   latlong2: ^0.9.1
   sliding_up_panel: ^2.0.0+1
   location: ^7.0.1
+  material_floating_search_bar_2: ^0.5.0
 
 
 dev_dependencies:
@@ -70,6 +71,7 @@ flutter:
     - assets/icon/
     - assets/images/
     - assets/images/chat/
+    - assets/images/mapstyle/
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen
   # with background color and splash image.
