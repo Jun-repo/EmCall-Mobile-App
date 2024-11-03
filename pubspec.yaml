@@ -46,7 +46,12 @@ dependencies:
   latlong2: ^0.9.1
   sliding_up_panel: ^2.0.0+1
   location: ^7.0.1
-  material_floating_search_bar_2: ^0.5.0
+  video_player: ^2.9.2
+  # flutter_mapbox_navigation: ^0.2.2
+  
+
+
+  
 
 
 dev_dependencies:

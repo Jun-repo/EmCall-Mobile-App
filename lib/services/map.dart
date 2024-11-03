@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapPage extends StatefulWidget {
@@ -24,7 +23,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
     'Outdoors': 'outdoors-v11',
     'Light': 'light-v10',
     'Dark': 'dark-v10',
-    'Satellite': 'satellite-v9',
+    'Nabigation Night': 'navigation-night-v1',
     'Satellite Streets': 'satellite-streets-v11',
   };
 
@@ -103,7 +102,10 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
       body: Stack(
         children: [
           initialPosition == null
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(
+                  child: CircularProgressIndicator(
+                  color: Colors.redAccent,
+                ))
               : FlutterMap(
                   mapController: _mapController,
                   options: MapOptions(
@@ -157,7 +159,6 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                             ]
                           : [],
                     ),
-                    buildFloatingSearchBar(context),
                   ],
                 ),
           Positioned(
@@ -204,6 +205,28 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                     color: Colors.redAccent,
                   ),
                 ),
+                // const SizedBox(height: 10),
+                // FloatingActionButton(
+                //   backgroundColor: Colors.transparent,
+                //   elevation: 12,
+                //   shape: CircleBorder(
+                //     side: BorderSide(
+                //       color: Colors.redAccent.withOpacity(0.5),
+                //       width: 1,
+                //     ),
+                //   ),
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const MapviewNavigation()),
+                //     );
+                //   },
+                //   child: const Icon(
+                //     Icons.navigation_outlined,
+                //     color: Colors.redAccent,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -214,8 +237,8 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             panel: _buildMapStyleSelector(),
             color: Theme.of(context).brightness == Brightness.light
-                ? Colors.white
-                : Colors.black,
+                ? const Color.fromARGB(255, 225, 225, 225)
+                : const Color.fromARGB(255, 15, 15, 15),
             panelSnapping: true,
             isDraggable: true,
             onPanelSlide: (position) {
@@ -300,66 +323,4 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
       ),
     );
   }
-}
-
-Widget buildFloatingSearchBar(BuildContext context) {
-  final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-
-  return FloatingSearchBar(
-    hint: 'Search...',
-    scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-    transitionDuration: const Duration(milliseconds: 800),
-    transitionCurve: Curves.easeInOut,
-    physics: const BouncingScrollPhysics(),
-    axisAlignment: isPortrait ? 0.0 : -1.0,
-    openAxisAlignment: 0.0,
-    width: isPortrait ? 600 : 500,
-    debounceDelay: const Duration(milliseconds: 500),
-    onQueryChanged: (query) {
-      // Call your model, bloc, or controller here to filter search results.
-    },
-    transition: CircularFloatingSearchBarTransition(),
-    actions: [
-      FloatingSearchBarAction(
-        showIfOpened: false,
-        child: CircularButton(
-          icon: const Icon(Icons.place),
-          onPressed: () {
-            // Action when the place icon is pressed.
-          },
-        ),
-      ),
-      FloatingSearchBarAction.searchToClear(
-        showIfClosed: false,
-      ),
-    ],
-    builder: (context, transition) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Material(
-          color: Colors.white,
-          elevation: 4.0,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Example Result 1'),
-                onTap: () {
-                  // Action when this result is selected.
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.search),
-                title: const Text('Example Result 2'),
-                onTap: () {
-                  // Action when this result is selected.
-                },
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
 }
