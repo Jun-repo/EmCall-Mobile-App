@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1061298560199",
-    "project_id": "emcall-53167",
-    "storage_bucket": "emcall-53167.appspot.com"
+    "project_number": "22376637856",
+    "project_id": "emcall-database-22498",
+    "storage_bucket": "emcall-database-22498.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1061298560199:android:6a502ecd282b41f7ea72e2",
+        "mobilesdk_app_id": "1:22376637856:android:0cf8b5729d62be443970c5",
         "android_client_info": {
           "package_name": "com.example.emcall"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBBWupHlFXHHLa7iMbXfsCr-lSmpcUsNBU"
+          "current_key": "AIzaSyCI5Pr4QUnd4c_H-ejcewPYutG8tpWWsKg"
         }
       ],
       "services": {

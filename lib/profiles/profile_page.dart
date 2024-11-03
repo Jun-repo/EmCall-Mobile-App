@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:emcall/settings/about_app_page.dart';
 import 'package:emcall/settings/contact_us_page.dart';
-import 'package:emcall/settings/downloads_page.dart';
-import 'package:emcall/settings/favorites_page.dart';
+import 'package:emcall/settings/notifiaction_page.dart';
 import 'package:emcall/settings/privacy_policy_page.dart';
 import 'package:emcall/settings/rate_us_page.dart';
 import 'package:emcall/settings/reportbug_page.dart';
@@ -12,7 +11,7 @@ import 'package:emcall/settings/terms_services_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-// import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'edit_profile_page.dart';
 import '../auth/sign_in_screen_sugesstion.dart';
@@ -99,48 +98,6 @@ class ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 50),
 
-              // Favorites & Downloads Section
-              Text('General',
-                  style: TextStyle(
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.white.withOpacity(0.5)
-                        : Colors.black
-                            .withOpacity(0.5), // Change color based on theme
-                    fontSize: 14, fontWeight: FontWeight.bold,
-                  )),
-              ListTile(
-                leading: Icon(
-                  Icons.favorite,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white // White icon for dark mode
-                      : Colors.black, // Black icon for light mode
-                ),
-                title: const Text('Favorites'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                ),
-                onTap: () {
-                  _navigateToPage(context, const FavoritesPage());
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.download,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white // White icon for dark mode
-                      : Colors.black, // Black icon for light mode
-                ),
-                title: const Text('Downloads'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                ),
-                onTap: () {
-                  _navigateToPage(context, const DownloadsPage());
-                },
-              ),
-
               const Divider(color: Color.fromARGB(73, 255, 36, 36)),
               Text('Accounts',
                   style: TextStyle(
@@ -198,22 +155,22 @@ class ProfilePageState extends State<ProfilePage> {
                             .withOpacity(0.5), // Change color based on theme
                     fontSize: 14, fontWeight: FontWeight.bold,
                   )),
-              // ListTile(
-              //   leading: Icon(
-              //     Icons.language_rounded,
-              //     color: Theme.of(context).brightness == Brightness.dark
-              //         ? Colors.white // White icon for dark mode
-              //         : Colors.black, // Black icon for light mode
-              //   ),
-              //   title: const Text('Languages'),
-              //   trailing: const Icon(
-              //     Icons.arrow_forward_ios_rounded,
-              //     size: 16,
-              //   ),
-              //   onTap: () {
-              //     _showLanguageDialog(context);
-              //   },
-              // ),
+              ListTile(
+                leading: Icon(
+                  Icons.language_rounded,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white // White icon for dark mode
+                      : Colors.black, // Black icon for light mode
+                ),
+                title: const Text('Languages'),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                ),
+                onTap: () {
+                  _showLanguageDialog(context);
+                },
+              ),
               ListTile(
                 leading: Icon(
                   Icons.notifications_active_rounded,
@@ -226,6 +183,9 @@ class ProfilePageState extends State<ProfilePage> {
                   Icons.arrow_forward_ios_rounded,
                   size: 16,
                 ),
+                onTap: () {
+                  _navigateToPage(context, const NotifiactionPage());
+                },
               ),
               // Location Toggle
               SwitchListTile(
@@ -604,98 +564,98 @@ class ProfilePageState extends State<ProfilePage> {
   }
 }
 
-// void _showLanguageDialog(BuildContext context) {
-//   final theme = Theme.of(context); // Access the current theme
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-//         title: Text(
-//           Intl.message('Select Language'),
-//           style: TextStyle(
-//             color: theme.brightness == Brightness.dark
-//                 ? Colors.white
-//                 : Colors.black, // Change color based on theme
-//             fontSize: 20,
-//           ),
-//         ),
-//         content: SizedBox(
-//           width: 200,
-//           height: 200,
-//           child: ListView(
-//             children: [
-//               ListTile(
-//                 title: Text(Intl.message('English')),
-//                 onTap: () {
-//                   // Handle language selection
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               ListTile(
-//                 title: Text(Intl.message('Tagalog')),
-//                 onTap: () {
-//                   // Handle language selection
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               ListTile(
-//                 title: Text(Intl.message('Korean')),
-//                 onTap: () {
-//                   // Handle language selection
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               ListTile(
-//                 title: Text(Intl.message('Japanese')),
-//                 onTap: () {
-//                   // Handle language selection
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               ListTile(
-//                 title: Text(Intl.message('Spanish')),
-//                 onTap: () {
-//                   // Handle language selection
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               ListTile(
-//                 title: Text(Intl.message('Ukraine')),
-//                 onTap: () {
-//                   // Handle language selection
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               ListTile(
-//                 title: Text(Intl.message('Thai')),
-//                 onTap: () {
-//                   // Handle language selection
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               ListTile(
-//                 title: Text(Intl.message('Arabic')),
-//                 onTap: () {
-//                   // Handle language selection
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//             ],
-//           ),
-//         ),
-//         actions: [
-//           TextButton(
-//             style: TextButton.styleFrom(
-//               foregroundColor: Colors.redAccent,
-//             ),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//             },
-//             child: Text(Intl.message('Cancel')),
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }
+void _showLanguageDialog(BuildContext context) {
+  final theme = Theme.of(context); // Access the current theme
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        title: Text(
+          Intl.message('Select Language'),
+          style: TextStyle(
+            color: theme.brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black, // Change color based on theme
+            fontSize: 20,
+          ),
+        ),
+        content: SizedBox(
+          width: 200,
+          height: 200,
+          child: ListView(
+            children: [
+              ListTile(
+                title: Text(Intl.message('English')),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text(Intl.message('Tagalog')),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text(Intl.message('Korean')),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text(Intl.message('Japanese')),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text(Intl.message('Spanish')),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text(Intl.message('Ukraine')),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text(Intl.message('Thai')),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text(Intl.message('Arabic')),
+                onTap: () {
+                  // Handle language selection
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.redAccent,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(Intl.message('Cancel')),
+          ),
+        ],
+      );
+    },
+  );
+}

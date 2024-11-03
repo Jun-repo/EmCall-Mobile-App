@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBzTXs-bSFsAD7DlGjiEloVMTPi05kzWAY</string>
+	<string>AIzaSyDMTpDYMmRStOBQDrB87s2Hpyc19TAO_rM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1061298560199</string>
+	<string>22376637856</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.emcall</string>
 	<key>PROJECT_ID</key>
-	<string>emcall-53167</string>
+	<string>emcall-database-22498</string>
 	<key>STORAGE_BUCKET</key>
-	<string>emcall-53167.appspot.com</string>
+	<string>emcall-database-22498.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1061298560199:ios:777de00028fcf3a0ea72e2</string>
+	<string>1:22376637856:ios:dcc0a840c114db7f3970c5</string>
 </dict>
 </plist>

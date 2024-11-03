@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
+import 'dart:convert';
 import 'package:emcall/auth/sign_in_screen_sugesstion.dart';
 import 'package:emcall/auth/terms_and_privacy_sheet.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +11,7 @@ import 'package:emcall/auth/verification_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -69,28 +73,64 @@ class SignUpScreenState extends State<SignUpScreen> {
   }
 
   // Function to handle form submission
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate() && _imageFile != null && _isAgreed) {
       setState(() {
         isLoading = true; // Start loading
       });
 
-      // Simulate a loading delay
-      Future.delayed(const Duration(seconds: 2), () {
-        // Proceed to VerificationScreen
+      try {
+        // Step 1: Convert image to base64 string
+        final String imageBase64 = await _convertImageToBase64(_imageFile!);
+
+        // Step 2: Save user details with the base64 image in Firestore
+        await _saveUserDataToFirestore(imageBase64);
+
+        // Step 3: Navigate to VerificationScreen
         Navigator.push(
-          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => const VerificationScreen()),
         );
-      });
-    } else if (_imageFile == null) {
-      // Show error if image is not selected
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to register: $e')),
+        );
+      } finally {
+        setState(() {
+          isLoading = false; // Stop loading
+        });
+      }
+    } else {
+      _showFormErrors();
+    }
+  }
+
+  // Function to convert image to base64 string
+  Future<String> _convertImageToBase64(File imageFile) async {
+    final bytes = await imageFile.readAsBytes();
+    return base64Encode(bytes);
+  }
+
+  // Function to save user data to Firestore with base64 image string
+  Future<void> _saveUserDataToFirestore(String imageBase64) async {
+    final firestore = FirebaseFirestore.instance;
+
+    await firestore.collection('users').doc(_phoneController.text).set({
+      'fullName': _fullNameController.text,
+      'birthday': _birthdayController.text,
+      'gender': _selectedGender,
+      'phone': _phoneController.text,
+      'password': _passwordController.text,
+      'profileImage': imageBase64, // Store base64 image as text link
+    });
+  }
+
+  void _showFormErrors() {
+    if (_imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select an image.')),
       );
     } else if (!_isAgreed) {
-      // Show error if terms are not agreed to
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('You must agree to the terms.')),
       );

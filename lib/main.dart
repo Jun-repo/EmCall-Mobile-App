@@ -1,11 +1,13 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:emcall/auth/sign_in_screen_sugesstion.dart';
-// import 'package:emcall/l10n/l10n.dart';
+import 'package:emcall/l10n/l10n.dart';
 import 'package:emcall/onboarding_screen.dart';
 import 'package:emcall/services/notification.dart';
 import 'package:emcall/theme/theme_manager.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +15,20 @@ import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyCNiXTHT-yY7Z5JTs1cpcuS0tJ34nPmqKU",
+            authDomain: "emcall-database-22498.firebaseapp.com",
+            projectId: "emcall-database-22498",
+            storageBucket: "emcall-database-22498.firebasestorage.app",
+            messagingSenderId: "22376637856",
+            appId: "1:22376637856:web:34604b791a4662f53970c5"));
+  } else {
+    Firebase.initializeApp();
+  }
+
   await NotificationService.init();
   tz.initializeTimeZones();
 
@@ -62,14 +78,14 @@ class OnboardingApp extends StatelessWidget {
       initial: savedThemeMode ?? AdaptiveThemeMode.light,
       builder: (theme, darkTheme) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        // supportedLocales: L10n.all,
-        // locale: const Locale('en'),
-        // localizationsDelegates: const [
-        //   AppLocalizations.delegate,
-        //   GlobalMaterialLocalizations.delegate,
-        //   GlobalWidgetsLocalizations.delegate,
-        //   GlobalCupertinoLocalizations.delegate,
-        // ],
+        supportedLocales: L10n.all,
+        locale: const Locale('en'),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         title: 'EmCall™',
         theme: theme,
         darkTheme: darkTheme,

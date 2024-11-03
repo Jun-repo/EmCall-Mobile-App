@@ -1,5 +1,5 @@
 import 'dart:io'; // For File
-import 'package:emcall/bottom_navigation/pages.dart';
+import 'package:emcall/auth/success_page.dart';
 import 'package:emcall/services/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // Import image_picker
@@ -418,8 +418,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             onComplete: () {},
                           );
 
-                          // // Show loading indicator for 2 seconds
-                          // await Future.delayed(const Duration(seconds: 2));
+                          // Show loading indicator for 2 seconds
+                          await Future.delayed(const Duration(seconds: 5));
 
                           // // // After loading, show snackbar
                           // // ignore: use_build_context_synchronously
@@ -434,15 +434,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           //   ),
                           // );
 
-                          // Delay for 3 seconds and then navigate to HomePage
-                          Future.delayed(const Duration(seconds: 3), () {
-                            Navigator.pushReplacement(
-                              // ignore: use_build_context_synchronously
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Pages()),
-                            );
-                          });
+                          // Navigate to SuccessPage after loading
+                          Navigator.pushReplacement(
+                            // ignore: use_build_context_synchronously
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SuccessPage()),
+                          );
 
                           // Stop loading
                           setState(() {

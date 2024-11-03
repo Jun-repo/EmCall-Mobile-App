@@ -19,7 +19,7 @@
      "@labelPassword": {},
      "validatorPassNone": "Please enter your password.",
      "@validatorPassNone": {},
-     "validatorPass6cha": "Password must be at least 6 characters long.",
+     "validatorPass6cha": "Password must be at least 8 characters long.",
      "@validatorPass6cha": {},
      "validatorPassSymbol": "'Password must contain at least one symbol.",
      "@validatorPassSymbol": {},
