@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -27,6 +28,14 @@ class EditProfilePageState extends State<EditProfilePage> {
 
   final bool _isProfileUpdated = false; // Flag to track profile update status
   bool _obscureText = true; // For showing/hiding password
+  String _profileImage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // Load user data on initialization
+    _loadUserData();
+  }
 
   final List<String> _genderOptions = ['Male', 'Female', 'Other'];
   String? _selectedGender;
@@ -181,6 +190,14 @@ class EditProfilePageState extends State<EditProfilePage> {
         false;
   }
 
+  // Method to get user data from SharedPreferences
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _profileImage = prefs.getString('profileImage') ?? '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -220,7 +237,15 @@ class EditProfilePageState extends State<EditProfilePage> {
                           backgroundColor: Colors.red,
                           backgroundImage: _imageFile != null
                               ? FileImage(_imageFile!)
-                              : const AssetImage('assets/jun.png'),
+                              : (_profileImage.isNotEmpty
+                                  ? NetworkImage(_profileImage)
+                                  : const AssetImage('assets/jun.png')),
+                          onBackgroundImageError: (_, __) {
+                            setState(() {
+                              _profileImage =
+                                  ''; // Reset to asset fallback if network image fails
+                            });
+                          },
                         ),
                         Positioned(
                           bottom: 1,
