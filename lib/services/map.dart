@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -15,6 +17,8 @@ class MapPage extends StatefulWidget {
 class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
   static const accessToken =
       'pk.eyJ1IjoiYnVkZHlhcHAwMSIsImEiOiJjbHlkbmQwM3IwN29lMmhzY2xlaHB5cGdlIn0._lyRkBeBqxS-Cr6gpYYRMQ';
+
+  String _phoneNumber = '';
 
   final MapController _mapController = MapController(); // Add MapController
   String selectedStyle = 'streets-v11';
@@ -38,6 +42,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _initLocation();
+    _loadUserData();
 
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
@@ -83,7 +88,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
     });
 
     location.enableBackgroundMode(enable: true);
-    location.onLocationChanged.listen((LocationData currentLocation) {
+    location.onLocationChanged.listen((LocationData currentLocation) async {
       setState(() {
         initialPosition =
             LatLng(currentLocation.latitude!, currentLocation.longitude!);
@@ -93,6 +98,31 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
         print(
             'Updated Location: Latitude: ${currentLocation.latitude}, Longitude: ${currentLocation.longitude}');
       }
+      // Update the current location in the Supabase database
+
+      await updateCurrentLocation(
+        currentLocation.latitude!,
+        currentLocation.longitude!,
+        _phoneNumber,
+      );
+    });
+  }
+
+  // New method to update current location in Supabase
+  Future<void> updateCurrentLocation(
+      double latitude, double longitude, String phoneNumber) async {
+    await Supabase.instance.client
+        .from('users') // Change to your table name
+        .update({'longitude': longitude, 'latitude': latitude}).eq(
+            'phone_number', phoneNumber);
+  }
+
+  // Method to get user data from SharedPreferences
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _phoneNumber =
+          prefs.getString('phoneNumber') ?? 'Phone number not available';
     });
   }
 
@@ -205,28 +235,6 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                     color: Colors.redAccent,
                   ),
                 ),
-                // const SizedBox(height: 10),
-                // FloatingActionButton(
-                //   backgroundColor: Colors.transparent,
-                //   elevation: 12,
-                //   shape: CircleBorder(
-                //     side: BorderSide(
-                //       color: Colors.redAccent.withOpacity(0.5),
-                //       width: 1,
-                //     ),
-                //   ),
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (context) => const MapviewNavigation()),
-                //     );
-                //   },
-                //   child: const Icon(
-                //     Icons.navigation_outlined,
-                //     color: Colors.redAccent,
-                //   ),
-                // ),
               ],
             ),
           ),

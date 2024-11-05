@@ -25,9 +25,10 @@ class ProfilePage extends StatefulWidget {
 
 class ProfilePageState extends State<ProfilePage> {
   StreamSubscription<Position>? _positionStreamSubscription;
-  Position? _currentPosition;
-  bool _isLocationOn = false; // Track the state of the location toggle
   bool _isDarkMode = false; // State variable to track dark mode
+  bool _isLocationOn = false;
+  Position? _currentPosition;
+  StreamSubscription<ServiceStatus>? _serviceStatusStream;
 
   String _fullName = '';
   String _phoneNumber = '';
@@ -38,6 +39,8 @@ class ProfilePageState extends State<ProfilePage> {
     super.initState();
     // Load user data on initialization
     _loadUserData();
+    _initializeLocationStatus();
+    _listenToServiceStatus();
     // Load the saved theme mode and update the switch state
     AdaptiveTheme.getThemeMode().then((mode) {
       setState(() {
@@ -216,17 +219,26 @@ class ProfilePageState extends State<ProfilePage> {
                   _isLocationOn ? 'Location On' : 'Location Off',
                   style: const TextStyle(fontSize: 16),
                 ),
-                value: _isLocationOn, // Location toggle state
-                onChanged: (value) {
-                  setState(() {
-                    _isLocationOn = value;
-                    if (_isLocationOn) {
-                      _enableLocation();
-                    } else {
-                      _disableLocation();
-                      _currentPosition = null;
+                value: _isLocationOn,
+                onChanged: (value) async {
+                  if (value) {
+                    bool serviceEnabled =
+                        await Geolocator.isLocationServiceEnabled();
+                    if (!serviceEnabled) {
+                      serviceEnabled = await Geolocator.openLocationSettings();
                     }
-                  });
+                    if (serviceEnabled) {
+                      setState(() {
+                        _isLocationOn = true;
+                      });
+                      _enableLocation();
+                    }
+                  } else {
+                    setState(() {
+                      _isLocationOn = false;
+                      _disableLocation();
+                    });
+                  }
                 },
                 secondary: Icon(
                   _isLocationOn ? Icons.location_on : Icons.location_off,
@@ -466,10 +478,42 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  // Initialize location status at startup
+  Future<void> _initializeLocationStatus() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    setState(() {
+      _isLocationOn = serviceEnabled;
+    });
+    if (_isLocationOn) {
+      _enableLocation();
+    }
+  }
+
+  // Listen to changes in system location service status
+  void _listenToServiceStatus() {
+    _serviceStatusStream = Geolocator.getServiceStatusStream().listen(
+      (ServiceStatus status) {
+        bool isServiceEnabled = status == ServiceStatus.enabled;
+        setState(() {
+          _isLocationOn = isServiceEnabled;
+        });
+        if (isServiceEnabled) {
+          _enableLocation();
+        } else {
+          _disableLocation();
+        }
+      },
+    );
+  }
+
+  // Enable location updates if services are on and permissions are granted
   void _enableLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return; // Location services are not enabled
+      if (kDebugMode) {
+        print('Location services are not enabled.');
+      }
+      return;
     }
 
     LocationPermission permission = await Geolocator.checkPermission();
@@ -477,29 +521,35 @@ class ProfilePageState extends State<ProfilePage> {
       permission = await Geolocator.requestPermission();
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
-        return; // Permissions are not granted
+        if (kDebugMode) {
+          print('Location permissions are not granted.');
+        }
+        return;
       }
     }
 
-    // Create a LocationSettings object with desired accuracy and distance filter
     LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 10, // Update every 10 meters
+      distanceFilter: 0, // Update with any movement
     );
 
-    // Start listening for location updates
-    _positionStreamSubscription =
-        Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-            (Position position) {
+    _positionStreamSubscription = Geolocator.getPositionStream(
+      locationSettings: locationSettings,
+    ).listen((Position position) {
       setState(() {
-        _currentPosition = position; // Update the current position
+        _currentPosition = position;
       });
-    }, onError: (error) {});
+    }, onError: (error) {
+      if (kDebugMode) {
+        print('Location update error: $error');
+      }
+    });
   }
 
+  // Disable location updates and clear the subscription
   void _disableLocation() {
     _positionStreamSubscription?.cancel();
-    _positionStreamSubscription = null; // Clear the subscription
+    _positionStreamSubscription = null;
 
     if (kDebugMode) {
       print('Location updates disabled.');
@@ -508,7 +558,8 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   void dispose() {
-    _disableLocation();
+    _serviceStatusStream?.cancel(); // Cancel the service status stream
+    _disableLocation(); // Cancel location updates
     super.dispose();
   }
 
