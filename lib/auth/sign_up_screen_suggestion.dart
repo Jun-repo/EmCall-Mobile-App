@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-import 'dart:convert';
 import 'package:emcall/auth/sign_in_screen_sugesstion.dart';
 import 'package:emcall/auth/terms_and_privacy_sheet.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +10,7 @@ import 'package:emcall/auth/verification_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -38,6 +37,17 @@ class SignUpScreenState extends State<SignUpScreen> {
       TextEditingController(); // Password instead of PIN
   final TextEditingController _confirmPasswordController =
       TextEditingController(); // Confirm Password
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _birthdayController.dispose();
+    _genderController.dispose();
+    _phoneController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   // Gender options
   final List<String> _genderOptions = ['Lalaki', 'Babae', 'Bakla', 'Tumboy'];
@@ -72,65 +82,131 @@ class SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  Future<void> saveUserData() async {
+    // Get the Supabase client
+    final supabase = Supabase.instance.client;
+
+    // Prepare user data
+    final Map<String, dynamic> userData = {
+      'full_name': _fullNameController.text,
+      'phone_number': _phoneController.text,
+      'password': _passwordController.text,
+      'birthday': _birthdayController.text,
+      'gender': _selectedGender,
+      'profile_image':
+          _imageFile != null ? await _uploadImage(_imageFile!) : null,
+    };
+
+    // Insert data into Supabase
+    final response = await supabase.from('users').insert(userData);
+
+    if (response != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Row(
+            children: [
+              const Icon(
+                Icons.warning_rounded, // You can use any icon here
+                color: Colors.white,
+              ),
+              const SizedBox(
+                  width: 8), // Add some space between the icon and text
+              Expanded(
+                child: Text(
+                  'Initial data failed to save!',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.greenAccent,
+          content: Row(
+            children: [
+              const Icon(
+                Icons.save_rounded, // You can use any icon here
+                color: Colors.white,
+              ),
+              const SizedBox(
+                  width: 8), // Add some space between the icon and text
+              Expanded(
+                child: Text(
+                  'Initial data saved',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const VerificationScreen()));
+    }
+  }
+
+// Function to upload image to Supabase Storage and return the public URL
+  Future<String?> _uploadImage(File imageFile) async {
+    final supabase = Supabase.instance.client;
+
+    final path = 'profile_images/${DateTime.now().millisecondsSinceEpoch}.png';
+    final response = await supabase.storage
+        .from('profile_image_bucket')
+        .upload(path, imageFile);
+
+    if (response.isNotEmpty) {
+      // Directly get the public URL without requiring a token
+      final imageUrl =
+          supabase.storage.from('profile_image_bucket').getPublicUrl(path);
+      return imageUrl; // Save this URL in your database
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Image upload failed')),
+      );
+      return null;
+    }
+  }
+
   // Function to handle form submission
-  Future<void> _submitForm() async {
+  void _submitForm() async {
     if (_formKey.currentState!.validate() && _imageFile != null && _isAgreed) {
       setState(() {
         isLoading = true; // Start loading
       });
+      // Save user data to Supabase
+      await saveUserData();
 
-      try {
-        // Step 1: Convert image to base64 string
-        final String imageBase64 = await _convertImageToBase64(_imageFile!);
+      setState(() {
+        isLoading = false; // Stop loading
+      });
 
-        // Step 2: Save user details with the base64 image in Firestore
-        await _saveUserDataToFirestore(imageBase64);
-
-        // Step 3: Navigate to VerificationScreen
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const VerificationScreen()),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to register: $e')),
-        );
-      } finally {
-        setState(() {
-          isLoading = false; // Stop loading
-        });
-      }
-    } else {
-      _showFormErrors();
-    }
-  }
-
-  // Function to convert image to base64 string
-  Future<String> _convertImageToBase64(File imageFile) async {
-    final bytes = await imageFile.readAsBytes();
-    return base64Encode(bytes);
-  }
-
-  // Function to save user data to Firestore with base64 image string
-  Future<void> _saveUserDataToFirestore(String imageBase64) async {
-    final firestore = FirebaseFirestore.instance;
-
-    await firestore.collection('users').doc(_phoneController.text).set({
-      'fullName': _fullNameController.text,
-      'birthday': _birthdayController.text,
-      'gender': _selectedGender,
-      'phone': _phoneController.text,
-      'password': _passwordController.text,
-      'profileImage': imageBase64, // Store base64 image as text link
-    });
-  }
-
-  void _showFormErrors() {
-    if (_imageFile == null) {
+// Proceed to VerificationScreen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const VerificationScreen()),
+      );
+    } else if (_imageFile == null) {
+      // Show error if image is not selected
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select an image.')),
       );
     } else if (!_isAgreed) {
+      // Show error if terms are not agreed to
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('You must agree to the terms.')),
       );

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:emcall/bottom_navigation/pages.dart';
 import 'package:emcall/auth/sign_up_screen_suggestion.dart';
 import 'package:emcall/services/notification.dart';
@@ -7,6 +9,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../theme/theme_manager.dart';
 
@@ -41,7 +44,6 @@ class _SignInScreenState extends State<SignInScreen> {
     if (isLoggedIn == true) {
       // Redirect to the homepage
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
             builder: (context) =>
@@ -54,6 +56,87 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> _saveLoginState() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', true); // Save login status
+  }
+
+  // Function to sign in user
+  Future<void> signIn() async {
+    setState(() {
+      _isLoading = true; // Start loading
+    });
+
+    final supabase = Supabase.instance.client;
+
+    // Fetch user information based on phone number and password
+    final response = await supabase
+        .from('users')
+        .select()
+        .eq('phone_number', _phoneController.text)
+        .eq('password', _passwordController.text)
+        .single();
+
+    if (response.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Row(
+            children: [
+              const Icon(
+                Icons.warning_rounded, // You can use any icon here
+                color: Colors.white,
+              ),
+              const SizedBox(
+                  width: 8), // Add some space between the icon and text
+              Expanded(
+                child: Text(
+                  'Login Failed!',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      // User found; extract user data
+      final userData = response; // Assuming the first item is the user
+      String fullName = userData['full_name'];
+      String phoneNumber = userData['phone_number'];
+      String profileImage = userData['profile_image'];
+
+      // Save login state and user data
+      await _saveLoginState();
+      await _saveUserData(fullName, phoneNumber, profileImage);
+
+      NotificationService.showInstantNotification(
+          "Login Success", "Welcome back!");
+
+      // Navigate to the appropriate screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ShowCaseWidget(builder: (context) => const Pages()),
+        ),
+      );
+    }
+
+    setState(() {
+      _isLoading = false; // Stop loading
+    });
+  }
+
+// Save user data method
+  Future<void> _saveUserData(
+      String fullName, String phoneNumber, String profileImage) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('fullName', fullName);
+    await prefs.setString('phoneNumber', phoneNumber);
+    await prefs.setString('profileImage', profileImage);
   }
 
   @override
@@ -235,20 +318,10 @@ class _SignInScreenState extends State<SignInScreen> {
                           });
 
                           await Future.delayed(const Duration(seconds: 0));
-                          await _saveLoginState(); // Save login state
+                          await signIn(); // Save login state
 
                           setState(() {
                             _isLoading = false;
-
-                            NotificationService.showInstantNotification(
-                                "Login Success", "Wellcome back!");
-
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ShowCaseWidget(
-                                      builder: (context) => const Pages())),
-                            );
 
                             if (kDebugMode) {
                               print('Phone Number: $_phoneNumber');
@@ -572,7 +645,7 @@ void _showNewPasswordDialog(BuildContext context) {
                         // Simulate a delay (e.g., for a network request)
                         Future.delayed(const Duration(seconds: 2), () {
                           String newPassword = newPasswordController.text;
-                          // ignore: use_build_context_synchronously
+
                           Navigator.of(context).pop(); // Close the dialog
                           setState(() {
                             isLoading = false; // Stop loading

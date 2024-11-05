@@ -4,30 +4,22 @@ import 'package:emcall/l10n/l10n.dart';
 import 'package:emcall/onboarding_screen.dart';
 import 'package:emcall/services/notification.dart';
 import 'package:emcall/theme/theme_manager.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: "AIzaSyCNiXTHT-yY7Z5JTs1cpcuS0tJ34nPmqKU",
-            authDomain: "emcall-database-22498.firebaseapp.com",
-            projectId: "emcall-database-22498",
-            storageBucket: "emcall-database-22498.firebasestorage.app",
-            messagingSenderId: "22376637856",
-            appId: "1:22376637856:web:34604b791a4662f53970c5"));
-  } else {
-    Firebase.initializeApp();
-  }
+  await Supabase.initialize(
+    url: 'https://gghofmeouyavrcdfwcsw.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnaG9mbWVvdXlhdnJjZGZ3Y3N3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA3NTg1MzQsImV4cCI6MjA0NjMzNDUzNH0.IEmi_a1vIepHSv9D0b29HJ8NOKOsMx_OwDYXey2NHGo',
+  );
 
   await NotificationService.init();
   tz.initializeTimeZones();
@@ -51,6 +43,8 @@ void main() async {
     ),
   );
 }
+
+final supabase = Supabase.instance.client;
 
 // Function to check if the user is new
 Future<bool> checkIfNewUser() async {

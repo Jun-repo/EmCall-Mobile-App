@@ -19,28 +19,17 @@ class EditProfilePage extends StatefulWidget {
 class EditProfilePageState extends State<EditProfilePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   File? _imageFile; // To store the selected profile image
-  File? _validIdFrontImage; // To store the front valid ID image
-  File? _validIdBackImage; // To store the back valid ID image
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _birthdayController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _validIdController = TextEditingController();
+
   final bool _isProfileUpdated = false; // Flag to track profile update status
   bool _obscureText = true; // For showing/hiding password
 
   final List<String> _genderOptions = ['Male', 'Female', 'Other'];
-  final List<String> _validIdOptions = [
-    'Student ID',
-    'Barangay ID',
-    'National ID',
-    'Driver\'s License ID',
-    'Tin ID'
-  ];
-
   String? _selectedGender;
-  String? _selectedValidId;
 
   Future<void> _pickProfile(ImageSource source) async {
     try {
@@ -63,21 +52,6 @@ class EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  // Function to pick an image from the gallery or camera
-  Future<void> _pickImage(ImageSource source, {bool isFront = true}) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-
-    if (pickedFile != null) {
-      setState(() {
-        if (isFront) {
-          _validIdFrontImage = File(pickedFile.path);
-        } else {
-          _validIdBackImage = File(pickedFile.path);
-        }
-      });
-    }
-  }
-
   // Function to show date picker and set selected date
   Future<void> _selectBirthday(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -96,17 +70,16 @@ class EditProfilePageState extends State<EditProfilePage> {
 
 // Function to handle form submission
   void _submitForm() async {
-    if (_formKey.currentState!.validate() &&
-        _imageFile != null &&
-        _validIdFrontImage != null &&
-        _validIdBackImage != null) {
+    if (_formKey.currentState!.validate() && _imageFile != null) {
       // Show loading dialog
       showDialog(
         context: context,
         barrierDismissible: false, // Prevent dismissal by tapping outside
         builder: (context) {
           return const Center(
-            child: CircularProgressIndicator(), // Show a loading spinner
+            child: CircularProgressIndicator(
+              color: Colors.redAccent,
+            ), // Show a loading spinner
           );
         },
       );
@@ -137,11 +110,6 @@ class EditProfilePageState extends State<EditProfilePage> {
     } else if (_imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select a profile image.')),
-      );
-    } else if (_validIdFrontImage == null || _validIdBackImage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Please capture both views of your valid ID.')),
       );
     }
   }
@@ -457,114 +425,6 @@ class EditProfilePageState extends State<EditProfilePage> {
                     },
                   ),
 
-                  const SizedBox(height: 16),
-
-                  // Valid ID Dropdown
-                  DropdownButtonFormField<String>(
-                    value: _selectedValidId,
-                    onChanged: (newValue) {
-                      setState(() {
-                        _selectedValidId = newValue;
-                        _validIdController.text = newValue ?? '';
-
-                        // Show camera to capture front view of valid ID
-                        _pickImage(ImageSource.camera, isFront: true);
-                        // Once the front image is captured, prompt for the back image
-                        _showCaptureBackViewDialog();
-                      });
-                    },
-                    decoration: InputDecoration(
-                      labelText: 'Valid ID',
-                      labelStyle: Theme.of(context)
-                          .inputDecorationTheme
-                          .labelStyle, // Use label style from theme
-                      floatingLabelBehavior: Theme.of(context)
-                          .inputDecorationTheme
-                          .floatingLabelBehavior,
-                      border: Theme.of(context)
-                          .inputDecorationTheme
-                          .border, // Use border from theme
-                      enabledBorder: Theme.of(context)
-                          .inputDecorationTheme
-                          .enabledBorder, // Use enabled border from theme
-                      focusedBorder: Theme.of(context)
-                          .inputDecorationTheme
-                          .focusedBorder, // Use focused border from theme
-                      hintStyle: Theme.of(context)
-                          .inputDecorationTheme
-                          .hintStyle, // Use hint style from theme
-                    ),
-                    items: _validIdOptions.map((idType) {
-                      return DropdownMenuItem(
-                        value: idType,
-                        child: Text(
-                          idType,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      );
-                    }).toList(),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select your valid ID.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Display the captured valid ID images in a GridView
-                  if (_validIdFrontImage != null || _validIdBackImage != null)
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 16.0), // Adding top margin
-                      child: GridView.count(
-                        crossAxisCount: 2, // Two images in a row
-                        shrinkWrap:
-                            true, // Allows GridView to take only the required height
-                        physics:
-                            const NeverScrollableScrollPhysics(), // Disable scrolling
-                        children: [
-                          if (_validIdFrontImage != null)
-                            Padding(
-                              padding: const EdgeInsets.all(
-                                  8.0), // Add margin around the image
-                              child: Column(
-                                children: [
-                                  const Text('Captured Front ID Image:',
-                                      textAlign: TextAlign.center),
-                                  const SizedBox(height: 10),
-                                  Image.file(
-                                    _validIdFrontImage!,
-                                    fit: BoxFit
-                                        .cover, // Fit the image in the space
-                                    height: 100, // Set a fixed height
-                                    width: 100, // Set a fixed width
-                                  ),
-                                ],
-                              ),
-                            ),
-                          if (_validIdBackImage != null)
-                            Padding(
-                              padding: const EdgeInsets.all(
-                                  8.0), // Add margin around the image
-                              child: Column(
-                                children: [
-                                  const Text('Captured Back ID Image:',
-                                      textAlign: TextAlign.center),
-                                  const SizedBox(height: 10),
-                                  Image.file(
-                                    _validIdBackImage!,
-                                    fit: BoxFit
-                                        .cover, // Fit the image in the space
-                                    height: 100, // Set a fixed height
-                                    width: 100, // Set a fixed width
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
                   const SizedBox(height: 30),
                   // Save Changes Button
                   Center(
@@ -596,69 +456,6 @@ class EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
       ),
-    );
-  }
-
-  // Function to show a dialog for capturing the back view of the valid ID
-  void _showCaptureBackViewDialog() {
-    final theme = Theme.of(context); // Access the current theme
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // Add border radius
-          ),
-          backgroundColor:
-              theme.dialogBackgroundColor, // Match dialog background with theme
-
-          title: Text(
-            'Capture Back View of ID',
-            style: TextStyle(
-              color: theme.brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black, // Change color based on theme
-              fontSize: 20,
-            ),
-          ),
-          content: Text(
-            'Please capture the back view of your valid ID.',
-            style: TextStyle(
-              color: theme.brightness == Brightness.dark
-                  ? Colors.white70
-                  : Colors.black87, // Adjust for better contrast
-              fontSize: 16,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-                _pickImage(ImageSource.camera,
-                    isFront: false); // Capture back view
-              },
-              child: const Text(
-                'Capture Back View',
-                style: TextStyle(color: Colors.redAccent),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: theme.brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black, // Change color based on theme
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

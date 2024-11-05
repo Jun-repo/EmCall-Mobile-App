@@ -7,6 +7,7 @@ import 'package:emcall/posts/pnp_post.dart';
 import 'package:emcall/posts/rescue_post.dart';
 import 'package:emcall/services/notification.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import '../../posts/mdrrmo_page.dart';
 import '../../profiles/profile_page.dart';
@@ -24,6 +25,9 @@ class HomePageState extends State<HomePage>
   late Animation<double> _animation;
 
   int notificationCount = 0; // Initialize with zero notifications
+  String _fullName = '';
+  String _phoneNumber = '';
+  String _profileImage = '';
 
   // Add this method to increment notification count
   void _incrementNotificationCount() {
@@ -54,6 +58,9 @@ class HomePageState extends State<HomePage>
             [globalKeyOne, globalKeyTwo, globalKeyThree, globalKeyFour]));
 
     super.initState();
+    // Load user data on initialization
+    _loadUserData();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -66,6 +73,17 @@ class HomePageState extends State<HomePage>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  // Method to get user data from SharedPreferences
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _fullName = prefs.getString('fullName') ?? 'Hello, Guest!';
+      _phoneNumber =
+          prefs.getString('phoneNumber') ?? 'Phone number not available';
+      _profileImage = prefs.getString('profileImage') ?? '';
+    });
   }
 
   @override
@@ -91,11 +109,18 @@ class HomePageState extends State<HomePage>
                 title: 'Profile Picture',
                 description:
                     'Your Profile picture appears here, \n and allows you to click to navigate to settings!',
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   backgroundColor: Colors.red,
                   maxRadius: 22,
                   // Replace Icon with Image from assets
-                  backgroundImage: AssetImage('assets/jun.png'),
+                  backgroundImage: _profileImage.isNotEmpty
+                      ? NetworkImage(_profileImage)
+                      : const AssetImage('assets/jun.png') as ImageProvider,
+                  onBackgroundImageError: (_, __) {
+                    setState(() {
+                      _profileImage = ''; // Reset to asset fallback
+                    });
+                  },
                 ),
               ),
             ),
@@ -104,11 +129,11 @@ class HomePageState extends State<HomePage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hello, Amadeo!',
+                  'Hello $_fullName!',
                   style: theme.textTheme.headlineMedium,
                 ),
                 Text(
-                  '+63 9567211558',
+                  _phoneNumber,
                   style: theme.textTheme.headlineSmall,
                 ),
               ],

@@ -29,14 +29,31 @@ class ProfilePageState extends State<ProfilePage> {
   bool _isLocationOn = false; // Track the state of the location toggle
   bool _isDarkMode = false; // State variable to track dark mode
 
+  String _fullName = '';
+  String _phoneNumber = '';
+  String _profileImage = '';
+
   @override
   void initState() {
     super.initState();
+    // Load user data on initialization
+    _loadUserData();
     // Load the saved theme mode and update the switch state
     AdaptiveTheme.getThemeMode().then((mode) {
       setState(() {
         _isDarkMode = mode == AdaptiveThemeMode.dark;
       });
+    });
+  }
+
+  // Method to get user data from SharedPreferences
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _fullName = prefs.getString('fullName') ?? 'Hello, Guest!';
+      _phoneNumber =
+          prefs.getString('phoneNumber') ?? 'Phone number not available';
+      _profileImage = prefs.getString('profileImage') ?? '';
     });
   }
 
@@ -66,22 +83,28 @@ class ProfilePageState extends State<ProfilePage> {
               // Profile Picture and Text
               Row(
                 children: [
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/jun.png'),
-                  ),
+                  CircleAvatar(
+                      radius: 40,
+                      backgroundImage: _profileImage.isNotEmpty
+                          ? NetworkImage(_profileImage)
+                          : const AssetImage('assets/jun.png') as ImageProvider,
+                      onBackgroundImageError: (_, __) {
+                        setState(() {
+                          _profileImage = ''; // Reset to asset fallback
+                        });
+                      }),
                   const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Amadeo Amasan III',
+                        _fullName,
                         style: theme.textTheme.titleLarge,
                       ),
                       Row(
                         children: [
                           Text(
-                            '+63 923-456-789',
+                            _phoneNumber,
                             style: theme.textTheme.titleMedium,
                           ),
                           const SizedBox(width: 4),
